@@ -10,9 +10,11 @@ const answer = {
     value: 0,
     wasAnswered: false
 }
+const sign = {
+    operator: "",
+    wasClick: false
+}
 let index = 0;
-let operator = "";
-let wasClick = false;
 let array = [];
 
 function add (number1, number2) {
@@ -60,8 +62,9 @@ buttons.forEach((button) => button.addEventListener("click", () => {
     }
     else {
         num2.value = Number(array[index]);
-        operator = array[index-1];
-        answer.value = operate(num1.value,num2.value,operator);
+        sign.wasClick = false;
+        sign.operator = array[index-1];
+        answer.value = operate(num1.value,num2.value,sign.operator);
         num1.value = answer.value;
         bottomDisplayer.append(`${num2.value}`);
         index++;
@@ -74,9 +77,10 @@ buttons.forEach((button) => button.addEventListener("click", () => {
 const signButtons = document.querySelectorAll(".sign");
 
 signButtons.forEach((button) => button.addEventListener("click", () => {
-    if(num1.wasClick === true && wasClick === false){
+    if(num1.wasClick === true && sign.wasClick === false){
         array.push(button.innerHTML);
         bottomDisplayer.append(` ${button.innerHTML} `);
+        sign.wasClick = true;
         index++;
         if(answer.wasAnswered === true){
             upperDisplayer.innerHTML = `Ans = ${answer.value}`
@@ -88,7 +92,7 @@ signButtons.forEach((button) => button.addEventListener("click", () => {
 const equalButton = document.querySelector("#equal");
 
 equalButton.addEventListener("click", () => {
-    if(operator === "/" && num2.value === 0){
+    if(sign.operator === "/" && num2.value === 0){
         alert("You cant divide by 0");
         clearAll();
         return;
@@ -107,12 +111,12 @@ function clearAll(){
     num2.wasClick = false;
     answer.value = 0;
     answer.wasAnswered = false;
-    index = 0;
-    wasClick = false;
-    operator = "";
-    array = [];
+    sign.wasClick = false;
+    sign.operator = "";
     upperDisplayer.innerHTML = "";
     bottomDisplayer.innerHTML = "";
+    index = 0;
+    array = [];
 }
 
 const clear = document.querySelector("#clear");
