@@ -62,6 +62,7 @@ buttons.forEach((button) => button.addEventListener("click", () => {
     }
     else {
         num2.value = Number(array[index]);
+        num2.wasClick = true;
         sign.wasClick = false;
         sign.operator = array[index-1];
         answer.value = operate(num1.value,num2.value,sign.operator);
@@ -80,6 +81,7 @@ signButtons.forEach((button) => button.addEventListener("click", () => {
     if(num1.wasClick === true && sign.wasClick === false){
         array.push(button.innerHTML);
         bottomDisplayer.append(` ${button.innerHTML} `);
+        num2.wasClick = false;
         sign.wasClick = true;
         index++;
         if(answer.wasAnswered === true){
@@ -92,11 +94,15 @@ signButtons.forEach((button) => button.addEventListener("click", () => {
 const equalButton = document.querySelector("#equal");
 
 equalButton.addEventListener("click", () => {
+    if(num1.wasClick === false || num2.wasClick === false){
+        return;
+    }
     if(sign.operator === "/" && num2.value === 0){
         alert("You cant divide by 0");
         clearAll();
         return;
     }
+    num2.wasClick = false;
     bottomDisplayer.append(" = ");
     upperDisplayer.innerHTML = bottomDisplayer.innerHTML;
     bottomDisplayer.innerHTML = "";
